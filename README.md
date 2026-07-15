@@ -10,3 +10,7 @@ Persoonlijke ontwikkelomgeving voor:
 - Python
 - RAMS
 - Biodiversiteit
+
+## Git workflow
+
+Beheer wijzigingen met Git en Lazygit.

@@ -1,0 +1,8 @@
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
+gui:
+  showFileTree: true
+  showRandomTip: false
+  nerdFontsVersion: "3"

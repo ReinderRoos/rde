@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+ROOTS=(
+    "$HOME/code"
+    "/mnt/c/Users/ReinderRoos/Werkruimte/DeltaPi"
+)
+
+projects=()
+
+for root in "${ROOTS[@]}"; do
+    if [ -d "$root" ]; then
+        while IFS= read -r dir; do
+            projects+=("$dir")
+        done < <(
+            find "$root" \
+                -mindepth 1 \
+                -maxdepth 1 \
+                -type d \
+                -not -name '.git' \
+                | sort
+        )
+    fi
+done
+
+selected=$(printf '%s\n' "${projects[@]}" | fzf \
+    --prompt="Project: " \
+    --height=60% \
+    --reverse)
+
+[ -z "$selected" ] && exit 0
+
+window_name=$(basename "$selected")
+
+if [ -n "$TMUX" ]; then
+    tmux new-window -c "$selected" -n "$window_name"
+else
+    cd "$selected" || exit 1
+fi
+
+cursor "$selected" >/dev/null 2>&1 &

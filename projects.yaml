@@ -1,0 +1,9 @@
+projects:
+  RDE:
+    path: /home/reinderroos/rde
+
+  DeltaPi:
+    path: /mnt/c/Users/ReinderRoos/Werkruimte/DeltaPi
+
+  Scripts:
+    path: /home/reinderroos/scripts

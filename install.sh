@@ -11,7 +11,11 @@ mkdir -p "$HOME/.config/lazygit"
 ln -sfn "$RDE_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 ln -sfn "$RDE_DIR/scripts/proj" "$HOME/.local/scripts/proj"
 ln -sfn "$RDE_DIR/lazygit/config.yml" "$HOME/.config/lazygit/config.yml"
+ln -sfn "$RDE_DIR/scripts/work" "$HOME/.local/scripts/work"
+
 chmod +x "$RDE_DIR/scripts/proj"
+chmod +x "$RDE_DIR/scripts/work"
+chmod +x "$RDE_DIR/work.py"
 
 BASH_LOAD_LINE='if [ -f "$HOME/rde/bash/rde.sh" ]; then source "$HOME/rde/bash/rde.sh"; fi'
 

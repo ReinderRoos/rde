@@ -10,6 +10,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias fd='fdfind'
 alias cat='batcat'
+alias lg='lazygit'
 
 # Editor
 export EDITOR=vim

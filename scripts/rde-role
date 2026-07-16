@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROLE="${1:-}"
+
+case "$ROLE" in
+    shell|claude|cursor|git)
+        ;;
+    *)
+        tmux display-message \
+            "Ongeldige RDE-rol: $ROLE"
+        exit 1
+        ;;
+esac
+
+CURRENT_WINDOW="$(
+    tmux display-message -p '#{window_name}'
+)"
+
+PROJECT=""
+
+# Bepaal het project bij voorkeur uit het huidige window.
+for KNOWN_ROLE in shell claude cursor git; do
+    SUFFIX="-$KNOWN_ROLE"
+
+    if [[ "$CURRENT_WINDOW" == *"$SUFFIX" ]]; then
+        PROJECT="${CURRENT_WINDOW%"$SUFFIX"}"
+        break
+    fi
+done
+
+# Val terug op het project dat work.py het laatst activeerde.
+if [[ -z "$PROJECT" ]]; then
+    PROJECT="$(
+        tmux show-option \
+            -gqv \
+            @rde_active_project
+    )"
+fi
+
+if [[ -z "$PROJECT" ]]; then
+    tmux display-message \
+        "Geen actief RDE-project. Start eerst 'w'."
+    exit 1
+fi
+
+TARGET_WINDOW="${PROJECT}-${ROLE}"
+
+if tmux list-windows -F '#{window_name}' |
+    grep -Fxq "$TARGET_WINDOW"; then
+
+    tmux set-option \
+        -g \
+        @rde_active_project \
+        "$PROJECT"
+
+    tmux select-window \
+        -t ":$TARGET_WINDOW"
+else
+    tmux display-message \
+        "Window '$TARGET_WINDOW' bestaat niet. Start opnieuw met 'w'."
+    exit 1
+fi
